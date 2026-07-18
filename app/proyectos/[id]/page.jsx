@@ -12,6 +12,10 @@ export default function DetalleProyectoPage() {
 
   const { id } = useParams(); // Obtiene el id del proyecto
   const router = useRouter();
+
+  // PARA AGREGAR MIEMBROS USAMOS ESTOS ESTADOS
+  const [miembros, setMiembros] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
   
   // ESTADOS PRINCIPALES
   const [proyecto, setProyecto] = useState(null);
@@ -89,6 +93,46 @@ export default function DetalleProyectoPage() {
 
         const dataCategorias = await resCategorias.json();
         setCategorias(dataCategorias); // Actualiza el estado
+
+        // Traemos miembros
+        const resMiembros = await fetch(
+          "http://127.0.0.1:8000/api/proyectos/miembros/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!resMiembros.ok) {
+          throw new Error("No se pudieron cargar los miembros");
+        }
+
+        const dataMiembros = await resMiembros.json();
+
+        const miembrosDelProyecto = dataMiembros.filter(
+          (miembro) => Number(miembro.proyecto) === Number(id)
+        );
+
+        setMiembros(miembrosDelProyecto);
+
+        // Traemos usuarios
+        const resUsuarios = await fetch(
+          "http://127.0.0.1:8000/api/usuarios/usuarios/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!resUsuarios.ok) {
+          throw new Error("No se pudieron cargar los usuarios");
+        }
+
+        const dataUsuarios = await resUsuarios.json();
+        setUsuarios(dataUsuarios);
+
       } catch (error) { // El catch captura los errores
         setError(error.message);
       } finally {
@@ -234,17 +278,7 @@ export default function DetalleProyectoPage() {
       setFormError(error.message);
     }
   }
-
-  // Funcion para cancelar formulario
-
-  function cancelarFormulario() {
-    setMostrarFormulario(false);
-    setTituloLink("");
-    setUrlLink("");
-    setCategoriaLink("");
-    setLinkEditandoId(null);
-    setFormError("");
-  }
+  
 
   if (loading) {
     return <p className="p-8">Cargando proyecto...</p>;
@@ -271,7 +305,11 @@ export default function DetalleProyectoPage() {
     <section className="min-h-[80vh] bg-gradient-to-r from-[var(--background)] via-[var(--background)] to-black px-8 py-20">
       <div className="mx-auto max-w-7xl">
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <ProjectInfoCard proyecto={proyecto} />
+          <ProjectInfoCard
+            proyecto={proyecto}
+            miembros={miembros}
+            usuarios={usuarios}
+          />
 
           {categoriasConLinks.map((categoria) => (
             <LinkCategoryCard

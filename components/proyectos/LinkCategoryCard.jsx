@@ -1,6 +1,6 @@
-"use client"; //Neceitamos interactividad
+"use client";
 
-import { useState } from "react"; // Para manejar los estados
+import { useState } from "react";
 import Image from "next/image";
 
 function obtenerIconoCategoria(nombre) {
@@ -20,30 +20,40 @@ export default function LinkCategoryCard({
   handleEditarLink,
   handleEliminarLink,
 }) {
-  const [nuevoLink, setNuevoLink] = useState(""); // Estado para controlar un nuevo link
-  const [linksEditados, setLinksEditados] = useState({}); // Estado para links editados
+  const [nuevoLink, setNuevoLink] = useState("");
+  const [linksEditados, setLinksEditados] = useState({});
 
   function obtenerValorLink(link) {
     return linksEditados[link.id] ?? link.url ?? "";
   }
 
-  {/* Funcion asincrona para GUARDAR UN LINK */}
+  function obtenerHref(link) {
+    const valor = obtenerValorLink(link).trim();
+
+    if (!valor) return "#";
+
+    if (valor.startsWith("http://") || valor.startsWith("https://")) {
+      return valor;
+    }
+
+    return `https://${valor}`;
+  }
+
   async function guardarNuevoLink() {
     if (!nuevoLink.trim()) return;
 
     const creado = await handleCrearLink(categoria.id, nuevoLink);
 
-    {/* Si se crea, limpiamos el estado */}
     if (creado) {
       setNuevoLink("");
     }
   }
 
-  {/* Funcion asincrona para EDITAR UN LINK */}
   async function guardarEdicion(link) {
     const nuevaUrl = linksEditados[link.id];
 
     if (nuevaUrl === undefined) return;
+    if (!nuevaUrl.trim()) return;
     if (nuevaUrl.trim() === link.url) return;
 
     const editado = await handleEditarLink(link.id, nuevaUrl);
@@ -57,92 +67,79 @@ export default function LinkCategoryCard({
     }
   }
 
-  // CARD
   return (
-    <div className="flex h-[360px] flex-col rounded-3xl border border-[var(--border-color)] bg-[var(--background)] p-6 text-[var(--texto)]">
-      <h3 className="text-center text-xl font-bold">
+    <div className="flex h-[430px] flex-col overflow-hidden rounded-3xl border border-[var(--border-color)] bg-[var(--background)] p-6 text-[var(--texto)]">
+      <h3 className="shrink-0 text-center text-xl font-bold">
         Link de {categoria.nombre}
       </h3>
 
-      <div className="mt-4 border-t-2 border-[var(--border-color)]"></div>
+      <div className="mt-4 shrink-0 border-t-2 border-[var(--border-color)]"></div>
 
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 min-h-36 items-center justify-center">
         <Image
           src={obtenerIconoCategoria(categoria.nombre)}
           alt={`Ícono de ${categoria.nombre}`}
-          width={150}
-          height={150}
-          className="object-contain rounded-xl"
+          width={125}
+          height={125}
+          className="rounded-xl object-contain"
         />
       </div>
 
-      <div className="mt-auto py-2">
-        <div className="max-h-24 space-y-2 overflow-y-auto pr-2">
-          {categoria.links.length === 0 ? (
-            <p className="text-sm text-[var(--gris)]">
-              Pegá un link abajo y tocá +
-            </p>
-          ) : (
-            categoria.links.map((link) => (
-              <div
-                key={link.id}
-                className="flex items-center gap-2"
-              >
-                <span className="font-semibold">
-                  Link:
-                </span>
+      {categoria.links.length > 0 && (
+        <div className="mb-3 max-h-28 shrink-0 space-y-2 overflow-y-auto pr-2">
+          {categoria.links.map((link) => (
+            <div key={link.id} className="flex items-center gap-2">
+              <span className="shrink-0 font-semibold">
+                Link:
+              </span>
 
-                {/* EDITAR LINK */}
-                <input
-                  type="url"
-                  value={obtenerValorLink(link)}
-                  onChange={(e) =>
-                    setLinksEditados({
-                      ...linksEditados,
-                      [link.id]: e.target.value,
-                    })
+              <input
+                type="url"
+                value={obtenerValorLink(link)}
+                onChange={(e) =>
+                  setLinksEditados((prev) => ({
+                    ...prev,
+                    [link.id]: e.target.value,
+                  }))
+                }
+                onBlur={() => guardarEdicion(link)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    guardarEdicion(link);
                   }
-                  onBlur={() => guardarEdicion(link)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      guardarEdicion(link);
-                    }
-                  }}
-                  className="min-w-0 flex-1 border-b border-dashed border-[var(--border-color)] bg-transparent px-2 py-1 text-sm outline-none focus:border-[var(--verde)]"
-                />
+                }}
+                className="min-w-0 flex-1 border-b border-dashed border-[var(--border-color)] bg-transparent px-2 py-1 text-sm outline-none focus:border-[var(--verde)]"
+              />
 
-                {/* BOTON PARA REDIRIGIR AL LINK*/}
-                <a
-                  href={obtenerValorLink(link)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-color)] text-sm font-bold hover:border-[var(--gris)] hover:text-[var(--texto)]"
-                >
-                  ↗
-                </a>
-                
-                {/* ELIMINAR LINK */}
-                <button
-                  type="button"
-                  onClick={() => handleEliminarLink(link.id)}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[var(--border-color)] text-xl font-bold hover:border-[var(--rojo)] hover:text-[var(--rojo)]"
-                >
-                  -
-                </button>
-              </div>
-            ))
-          )}
+              <a
+                href={obtenerHref(link)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Abrir link"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--border-color)] text-sm font-bold hover:border-[var(--verde)] hover:text-[var(--verde)]"
+              >
+                ↗
+              </a>
+
+              <button
+                type="button"
+                title="Eliminar link"
+                onClick={() => handleEliminarLink(link.id)}
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--border-color)] text-xl font-bold hover:border-[var(--rojo)] hover:text-[var(--rojo)]"
+              >
+                -
+              </button>
+            </div>
+          ))}
         </div>
-      </div>
+      )}
 
-      {/* NUEVOS LINKS */}  
-      <div className="flex items-center gap-2">
-        <span className="font-semibold">
+      <div className="flex shrink-0 items-center gap-2 border-t border-[var(--border-color)] pt-3">
+        <span className="shrink-0 font-semibold">
           Link:
         </span>
 
-        {/* AGREGAMOS UN NUEVO LINK */}  
         <input
           type="url"
           value={nuevoLink}
@@ -157,11 +154,11 @@ export default function LinkCategoryCard({
           className="min-w-0 flex-1 border-b border-dashed border-[var(--border-color)] bg-transparent px-2 py-1 text-sm outline-none placeholder:text-[var(--gris)] focus:border-[var(--verde)]"
         />
 
-        {/* BOTON PARA AGREGAR NUEVO LINK */}  
         <button
           type="button"
+          title="Agregar link"
           onClick={guardarNuevoLink}
-          className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[var(--border-color)] text-xl font-bold hover:border-[var(--verde)] hover:text-[var(--verde)]"
+          className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-[var(--border-color)] text-xl font-bold hover:border-[var(--verde)] hover:text-[var(--verde)]"
         >
           +
         </button>

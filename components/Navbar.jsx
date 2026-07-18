@@ -60,39 +60,49 @@ export default function Navbar() {
 
   return (
     <header className="w-full bg-gradient-to-r from-[var(--background)] via-[var(--background)] to-black">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-5">
+      <div className="mx-auto flex max-w-7xl flex-col gap-3 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
         <Link href="/" className="text-2xl font-bold text-[var(--texto)]">
           OrganizaDevs
         </Link>
 
-        <nav className="flex items-center gap-8">
-          <Link href="/" className="text-[var(--texto)] hover:text-[var(--gris)] transition">
+        <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 md:gap-8 md:text-base">
+
+          <Link
+            href="/"
+            className="rounded-xl border border-transparent px-3 py-2 text-[var(--texto)] transition-all duration-300 hover:bg-[var(--card)] hover:text-[var(--azul)]"
+          >
             Home
           </Link>
 
-          <Link href="/dashboard" className="text-[var(--texto)] hover:text-[var(--gris)] transition">
+          <Link href="/dashboard" className="rounded-xl border border-transparent px-3 py-2 text-[var(--texto)] transition-all duration-300 hover:bg-[var(--card)] hover:text-[var(--azul)]">
             Proyectos
           </Link>
 
-          <Link href="/#resenas" className="text-[var(--texto)] hover:text-[var(--gris)] transition">
+          <Link href="/#resenas" className="rounded-xl border border-transparent px-3 py-2 text-[var(--texto)] transition-all duration-300 hover:bg-[var(--card)] hover:text-[var(--azul)]">
             Reseñas
           </Link>
         </nav>
 
         {!loading && !usuario && (
-          <div className="flex items-center gap-4">
-            <Link href="/login" className="text-[var(--texto)] hover:text-[var(--gris)] transition">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4">
+            <Link
+              href="/login"
+              className="rounded-xl px-3 py-2 text-[var(--texto)] transition-all duration-300 hover:bg-[var(--card)] hover:text-[var(--azul)]"
+            >
               Login
             </Link>
 
-            <Link href="/register" className="rounded-full bg-[var(--verde)] px-5 py-2 font-semibold text-[var(--background)] hover:opacity-90 transition">
+            <Link
+              href="/register"
+              className="rounded-full bg-[var(--verde)] px-5 py-2 font-semibold text-[var(--background)] transition hover:opacity-70"
+            >
               Registrarse
             </Link>
           </div>
         )}
 
         {!loading && usuario && (
-          <div className="flex items-center gap-4">
+          <div className="flex w-full flex-col items-start gap-3 md:w-auto md:flex-row md:items-center md:gap-4">
             <span className="text-sm text-[var(--gris)]">
               Bienvenido/a,{" "}
               <span className="font-semibold text-[var(--texto)]">

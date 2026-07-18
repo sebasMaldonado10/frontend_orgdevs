@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
+import { FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -8,16 +8,16 @@ export default function Footer() {
         
         <div>
           <h2 className="mb-4 text-lg font-bold">
-            About Us
+            Acerca de
           </h2>
           <p className="text-[var(--gris)]">
-            Organizá los links de tus proyectos académicos en un solo lugar.
+            Un espacio simple para que tu equipo tenga siempre a mano los recursos importantes del proyecto.
           </p>
         </div>
 
         <div>
           <h2 className="mb-4 text-lg font-bold">
-            Quick Links
+            Links
           </h2>
 
           <ul className="space-y-2">
@@ -28,14 +28,8 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link href="/#guia" className="text-[var(--gris)] hover:text-[var(--verde)] transition">
-                Guía
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/#resenas" className="text-[var(--gris)] hover:text-[var(--verde)] transition">
-                Reseñas
+              <Link href="/dashboard" className="text-[var(--gris)] hover:text-[var(--verde)] transition">
+                Proyectos
               </Link>
             </li>
 
@@ -49,23 +43,16 @@ export default function Footer() {
 
         <div>
           <h2 className="mb-4 text-lg font-bold">
-            Follow
+            Contacto
           </h2>
 
           <ul className="space-y-2">
-            <li>
-              <a
-                href="#"
-                className="flex items-center gap-2 text-[var(--gris)] hover:text-[var(--verde)] transition"
-              >
-                <FaInstagram />
-                Instagram
-              </a>
-            </li>
 
             <li>
               <a
-                href="#"
+                href="https://wa.me/5493585144550"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-[var(--gris)] hover:text-[var(--verde)] transition"
               >
                 <FaWhatsapp />
@@ -75,7 +62,9 @@ export default function Footer() {
 
             <li>
               <a
-                href="#"
+                href="https://www.linkedin.com/in/sebastian-maldonado-8a462b32a/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-2 text-[var(--gris)] hover:text-[var(--verde)] transition"
               >
                 <FaLinkedin />
@@ -88,7 +77,10 @@ export default function Footer() {
 
       <div className="mt-10 border-t border-[var(--border-color)] pt-4">
         <p className="text-center text-sm text-[var(--gris)]">
-          © 2026 OrganizaDevs
+          © 2026 OrganizaDevs. Desarrollado por{" "}
+          <span className="font-semibold text-[var(--texto)]">
+            Sebastián Maldonado
+          </span>
         </p>
       </div>
     </footer>
