@@ -88,6 +88,27 @@ export default function DashboardPage() {
       }
     }
 
+    function obtenerTextoEstado(estado) {
+      const estados = {
+        PE: "Pendiente",
+        EC: "En curso",
+        FI: "Finalizada",
+      };
+
+      return estados[estado] || estado;
+    }
+
+    function obtenerClaseEstado(estado) {
+      const clases = {
+        PE: "border-yellow-500 text-yellow-400",
+        EC: "border-[var(--verde)] text-[var(--verde)]",
+        FI: "border-blue-400 text-blue-400",
+      };
+
+      return clases[estado] || "border-[var(--border-color)] text-[var(--texto)]";
+    }
+    
+
   if (loading) {
     return <p className="p-8">Cargando proyectos...</p>;
   }
@@ -185,9 +206,17 @@ export default function DashboardPage() {
                   Entrega: {proyecto.fecha_entrega || "Sin fecha"}
                 </p>
 
-                <p className="mt-2 text-sm text-[var(--verde)]">
-                  Estado: {proyecto.estado}
-                </p>
+                <div className="mt-4 flex items-center gap-2">
+                  <span className="text-sm text-[var(--gris)]">
+                    Estado:
+                  </span>
+
+                  <span
+                    className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold ${obtenerClaseEstado(proyecto.estado)}`}
+                  >
+                    {obtenerTextoEstado(proyecto.estado)}
+                  </span>
+                </div>
 
                 <Link
                   href={`/proyectos/${proyecto.id}`}
