@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 // Importamos los componentes
 import ProjectInfoCard from "@/components/proyectos/ProjectInfoCard";
 import LinkCategoryCard from "@/components/proyectos/LinkCategoryCard";

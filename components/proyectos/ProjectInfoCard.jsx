@@ -12,7 +12,7 @@ export default function ProjectInfoCard({ proyecto, miembros, usuarios }) {
   }
 
   return (
-    <div className="rounded-3xl border-2 border-[var(--border-color)] bg-[var(--background)] p-6 text-[var(--texto)]">
+    <div className="rounded-3xl border-2 border-[var(--border-color)] bg-[var(--background)] p-6 text-[var(--texto)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--border-color)] hover:shadow-xl">
       <h2 className="text-xl font-bold">
         Información del proyecto
       </h2>
@@ -26,6 +26,11 @@ export default function ProjectInfoCard({ proyecto, miembros, usuarios }) {
         <p>
           <span className="font-semibold">Descripción:</span>{" "}
           {proyecto.descripcion || "Sin descripción"}
+        </p>
+
+        <p>
+          <span className="font-semibold">Fecha de entrega:</span>{" "}
+          {proyecto.fecha_entrega || "Sin fecha"}
         </p>
 
         <p>

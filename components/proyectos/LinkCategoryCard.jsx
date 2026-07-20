@@ -68,7 +68,7 @@ export default function LinkCategoryCard({
   }
 
   return (
-    <div className="flex h-[430px] flex-col overflow-hidden rounded-3xl border border-[var(--border-color)] bg-[var(--background)] p-6 text-[var(--texto)]">
+    <div className="flex h-[430px] flex-col overflow-hidden rounded-3xl border border-[var(--border-color)] bg-[var(--background)] p-6 text-[var(--texto)] transition-all duration-300 hover:-translate-y-2 hover:border-[var(--border-color)] hover:shadow-xl">
       <h3 className="shrink-0 text-center text-xl font-bold">
         Link de {categoria.nombre}
       </h3>

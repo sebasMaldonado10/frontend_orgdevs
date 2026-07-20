@@ -14,6 +14,7 @@ export default function CrearProyectoPage() {
   // Datos del nuevo proyecto
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [fechaEntrega, setFechaEntrega] = useState("");
   const [materia, setMateria] = useState("");
   const [estado, setEstado] = useState("EC");
 
@@ -65,6 +66,18 @@ export default function CrearProyectoPage() {
     cargarUsuarios();
   }, [router]);
 
+  function handleToggleMiembro(usuarioId) {
+    const id = String(usuarioId);
+
+    if (miembrosSeleccionados.includes(id)) {
+      setMiembrosSeleccionados(
+        miembrosSeleccionados.filter((miembroId) => miembroId !== id)
+      );
+    } else {
+      setMiembrosSeleccionados([...miembrosSeleccionados, id]);
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -89,6 +102,7 @@ export default function CrearProyectoPage() {
         body: JSON.stringify({
           nombre,
           descripcion,
+          fecha_entrega: fechaEntrega || null,
           materia,
           estado,
         }),
@@ -133,7 +147,7 @@ export default function CrearProyectoPage() {
 
   return (
     <section className="flex min-h-[80vh] items-center justify-center bg-gradient-to-r from-[var(--background)] via-[var(--background)] to-black px-8 py-20">
-      <div className="w-full max-w-md rounded-2xl border-2 border-[var(--border-color)] bg-[var(--background)] p-8 shadow-2xl">
+      <div className="w-full max-w-lg rounded-2xl border-2 border-[var(--border-color)] bg-[var(--background)] p-8 shadow-2xl">
         <h1 className="text-3xl font-bold text-[var(--texto)]">
           Crear proyecto
         </h1>
@@ -176,6 +190,20 @@ export default function CrearProyectoPage() {
 
           <div>
             <label className="mb-2 block text-base font-medium text-[var(--texto)]">
+              Fecha de entrega:
+            </label>
+
+            <input
+              type="date"
+              name="fecha_entrega"
+              value={fechaEntrega}
+              onChange={(e) => setFechaEntrega(e.target.value)}
+              className="w-full rounded-lg border border-[var(--border-color)] bg-transparent px-4 py-3 text-[var(--texto)] outline-none focus:border-[var(--verde)]"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-base font-medium text-[var(--texto)]">
               Materia:
             </label>
 
@@ -199,7 +227,7 @@ export default function CrearProyectoPage() {
               name="estado"
               value={estado}
               onChange={(e) => setEstado(e.target.value)}
-              className="w-full rounded-lg border border-[var(--border-color)] bg-[var(--background)] px-4 py-3 text-[var(--texto)] outline-none focus:border-[var(--verde)]"
+              className="w-full cursor-pointer rounded-lg border border-[var(--border-color)] bg-[var(--background)] px-4 py-3 text-[var(--texto)] outline-none focus:border-[var(--verde)]"
             >
               <option value="PE">Pendiente</option>
               <option value="EC">En Curso</option>
@@ -212,28 +240,49 @@ export default function CrearProyectoPage() {
               Miembros del proyecto:
             </label>
 
-            <select
-              multiple
-              value={miembrosSeleccionados}
-              onChange={(e) => {
-                const seleccionados = Array.from(
-                  e.target.selectedOptions,
-                  (option) => option.value
-                );
+            <div className="max-h-56 overflow-y-auto rounded-sm border border-[var(--border-color)] bg-[var(--background)] p-3">
+              {usuariosDisponibles.length === 0 ? (
+                <p className="text-sm text-[var(--gris)]">
+                  No hay usuarios disponibles para agregar.
+                </p>
+              ) : (
+                usuariosDisponibles.map((usuario) => {
+                  const usuarioId = String(usuario.id);
+                  const seleccionado = miembrosSeleccionados.includes(usuarioId);
 
-                setMiembrosSeleccionados(seleccionados);
-              }}
-              className="cursor-pointer w-full rounded-lg border border-[var(--border-color)] bg-[var(--background)] px-4 py-3 text-[var(--texto)] outline-none focus:border-[var(--verde)]"
-            >
-              {usuariosDisponibles.map((usuario) => (
-                <option key={usuario.id} value={usuario.id}>
-                  {usuario.first_name || usuario.username}
-                </option>
-              ))}
-            </select>
+                  return (
+                    <label
+                      key={usuario.id}
+                      className={`flex cursor-pointer items-center justify-between rounded-lg border px-3 py-2 ${
+                        seleccionado
+                          ? "border-[var(--verde)] bg-[var(--azul)]"
+                          : "border-transparent hover:border-[var(--verde)] hover:bg-[var(--azul)]"
+                      }`}
+                    >
+                      <div>
+                        <p className="font-semibold text-[var(--texto)]">
+                          {usuario.first_name || usuario.username}
+                        </p>
+
+                        <p className="text-xs text-[var(--gris)]">
+                          {usuario.email}
+                        </p>
+                      </div>
+
+                      <input
+                        type="checkbox"
+                        checked={seleccionado}
+                        onChange={() => handleToggleMiembro(usuario.id)}
+                        className="h-4 w-4 accent-[var(--verde)]"
+                      />
+                    </label>
+                  );
+                })
+              )}
+            </div>
 
             <p className="mt-2 text-xs text-[var(--gris)]">
-              Podés seleccionar más de uno manteniendo Ctrl.
+              Seleccioná los compañeros que van a participar en este proyecto.
             </p>
           </div>
 
@@ -251,7 +300,7 @@ export default function CrearProyectoPage() {
             {loading ? "Creando..." : "Crear proyecto"}
           </button>
         </form>
-      </div>  
+      </div>
     </section>
   );
 }

@@ -1,12 +1,23 @@
+import Link from "next/link";
+
 export default function HomePage() {
   return (
     <section className="min-h-[80vh] bg-gradient-to-r from-[var(--background)] via-[var(--background)] to-black px-8 py-20">
       <div className="mx-auto max-w-7xl">
         <h1 className="text-5xl font-bold">OrganizaDevs</h1>
 
-        <p className="mt-4 max-w-xl text-[var(--gris)]">
-          Organizá los links importantes de tus proyectos académicos en un solo lugar.
-        </p>
+        <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-center">
+          <p className="max-w-2xl text-[var(--gris)]">
+            Organizá los links importantes de tus proyectos académicos en un solo lugar.
+          </p>
+
+          <Link
+            href="/dashboard"
+            className="inline-block shrink-0 rounded-xl bg-[var(--verde)] px-6 py-3 text-center font-semibold text-[var(--background)] transition duration-300 hover:-translate-y-1 hover:opacity-80"
+          >
+            Ir a mis proyectos ▲
+          </Link>
+        </div>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
           
