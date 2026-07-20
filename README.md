@@ -61,6 +61,15 @@ La idea principal es evitar que recursos como repositorios de GitHub, documentos
 
 ---
 
+## Autor
+
+Desarrollado por Sebastián Maldonado.
+
+LinkedIn:  
+https://www.linkedin.com/in/sebastian-maldonado-8a462b32a/
+
+---
+
 ## Licencia
 
 Este proyecto fue desarrollado con fines educativos y como parte de un portfolio personal.
