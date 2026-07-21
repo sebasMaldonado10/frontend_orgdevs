@@ -11,6 +11,8 @@ export default function CrearProyectoPage() {
   const [usuarioActualId, setUsuarioActualId] = useState(null);
   const [miembrosSeleccionados, setMiembrosSeleccionados] = useState([]);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   // Datos del nuevo proyecto
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -32,7 +34,7 @@ export default function CrearProyectoPage() {
 
       try {
         // Traemos el usuario actual para no mostrarlo como opción.
-        const resUsuarioActual = await fetch("http://127.0.0.1:8000/api/usuarios/me/", {
+        const resUsuarioActual = await fetch(`${API_URL}/api/usuarios/me/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -46,7 +48,7 @@ export default function CrearProyectoPage() {
         setUsuarioActualId(dataUsuarioActual.id);
 
         // Traemos todos los usuarios disponibles.
-        const resUsuarios = await fetch("http://127.0.0.1:8000/api/usuarios/usuarios/", {
+        const resUsuarios = await fetch(`${API_URL}/api/usuarios/usuarios/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -93,7 +95,7 @@ export default function CrearProyectoPage() {
 
     try {
       // 1. Creamos el proyecto.
-      const resProyecto = await fetch("http://127.0.0.1:8000/api/proyectos/proyectos/", {
+      const resProyecto = await fetch(`${API_URL}/api/proyectos/proyectos/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +119,7 @@ export default function CrearProyectoPage() {
       // 2. Agregamos los miembros seleccionados como miembros del proyecto.
       await Promise.all(
         miembrosSeleccionados.map((usuarioId) =>
-          fetch("http://127.0.0.1:8000/api/proyectos/miembros/", {
+          fetch(`${API_URL}/api/proyectos/miembros/`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

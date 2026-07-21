@@ -8,6 +8,8 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const [usuario, setUsuario] = useState(null); // Estado para manejar el Usuario
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +26,7 @@ export default function Navbar() {
       }
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/usuarios/me/", {
+        const res = await fetch(`${API_URL}/api/usuarios/me/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

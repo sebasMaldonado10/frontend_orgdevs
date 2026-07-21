@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 // Importamos los componentes
 import ProjectInfoCard from "@/components/proyectos/ProjectInfoCard";
 import LinkCategoryCard from "@/components/proyectos/LinkCategoryCard";
@@ -14,6 +12,9 @@ export default function DetalleProyectoPage() {
 
   const { id } = useParams(); // Obtiene el id del proyecto
   const router = useRouter();
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 
   // PARA AGREGAR MIEMBROS USAMOS ESTOS ESTADOS
   const [miembros, setMiembros] = useState([]);
@@ -41,7 +42,7 @@ export default function DetalleProyectoPage() {
       try {
         const resProyecto = await fetch(
           // Traemos el proyecto por ID
-          `http://127.0.0.1:8000/api/proyectos/proyectos/${id}/`,
+          `${API_URL}/api/proyectos/proyectos/${id}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -58,7 +59,7 @@ export default function DetalleProyectoPage() {
 
         const resLinks = await fetch(
           // Obtenemos los links
-          "http://127.0.0.1:8000/api/proyectos/links/",
+          `${API_URL}/api/proyectos/links/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -81,7 +82,7 @@ export default function DetalleProyectoPage() {
 
         const resCategorias = await fetch(
           // Trae las categorias/Cards
-          "http://127.0.0.1:8000/api/proyectos/categorias/",
+          `${API_URL}/api/proyectos/categorias/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -98,7 +99,7 @@ export default function DetalleProyectoPage() {
 
         // Traemos miembros
         const resMiembros = await fetch(
-          "http://127.0.0.1:8000/api/proyectos/miembros/",
+          `${API_URL}/api/proyectos/miembros/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -120,7 +121,7 @@ export default function DetalleProyectoPage() {
 
         // Traemos usuarios
         const resUsuarios = await fetch(
-          "http://127.0.0.1:8000/api/usuarios/usuarios/",
+          `${API_URL}/api/usuarios/usuarios/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -173,7 +174,7 @@ export default function DetalleProyectoPage() {
         (link) => Number(link.categoria) === Number(categoriaId)
       );
 
-      const res = await fetch("http://127.0.0.1:8000/api/proyectos/links/", {
+      const res = await fetch(`${API_URL}/api/proyectos/links/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -216,7 +217,7 @@ export default function DetalleProyectoPage() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/proyectos/links/${linkId}/`,
+        `${API_URL}api/proyectos/links/${linkId}/`,
         {
           method: "PATCH",
           headers: {
@@ -264,7 +265,7 @@ export default function DetalleProyectoPage() {
     }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/proyectos/links/${linkId}/`, {
+      const res = await fetch(`${API_URL}/api/proyectos/links/${linkId}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

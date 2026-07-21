@@ -8,6 +8,8 @@ import Link from "next/link";
 export default function DashboardPage() {
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   // Para manejar el menu de editar y eliminar
   const [menuAbierto, setMenuAbierto] = useState(null);
 
@@ -25,7 +27,7 @@ export default function DashboardPage() {
       }
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/proyectos/proyectos/", {
+        const res = await fetch(`${API_URL}/api/proyectos/proyectos/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +47,7 @@ export default function DashboardPage() {
     }
 
     fetchProyectos();
-  }, [router]);
+  }, [router, API_URL]);
 
   async function handleEliminarProyecto(proyectoId) {
       const confirmar = confirm("¿Seguro que querés eliminar este proyecto?");
@@ -65,7 +67,7 @@ export default function DashboardPage() {
       try {
         const res = await fetch(
           // Una vez autenticados, obtenemos el ID del proyecto
-          `http://127.0.0.1:8000/api/proyectos/proyectos/${proyectoId}/`,
+          `${API_URL}/api/proyectos/proyectos/${proyectoId}/`,
           {
             method: "DELETE",
             headers: {

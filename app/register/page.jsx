@@ -7,6 +7,8 @@ import Link from "next/link";
 export default function RegisterPage() {
   const router = useRouter();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   // Para manejar campos del register
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +37,7 @@ export default function RegisterPage() {
 
     // Hacemos la peticion a la API
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/usuarios/register/", {
+      const res = await fetch(`${API_URL}/api/usuarios/register/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -7,6 +7,8 @@ export default function EditarProyectoPage() {
   const router = useRouter();
   const params = useParams();
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const id = params.id;
 
   const [nombre, setNombre] = useState("");
@@ -30,7 +32,7 @@ export default function EditarProyectoPage() {
 
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/api/proyectos/proyectos/${id}/`,
+          `${API_URL}/api/proyectos/proyectos/${id}/`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -74,7 +76,7 @@ export default function EditarProyectoPage() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/proyectos/proyectos/${id}/`,
+        `${API_URL}/api/proyectos/proyectos/${id}/`,
         {
           method: "PATCH",
           headers: {
