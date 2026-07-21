@@ -3,6 +3,7 @@
 // Importamos los componentes
 import ProjectInfoCard from "@/components/proyectos/ProjectInfoCard";
 import LinkCategoryCard from "@/components/proyectos/LinkCategoryCard";
+import ProjectInvitationCard from "@/components/proyectos/ProjectInvitationCard";
 
 import { useEffect, useState } from "react"; // Para manejar estados y efectos secundarios
 import { useParams, useRouter } from "next/navigation"; // Para ruta dinámica y enrutado
@@ -313,6 +314,8 @@ export default function DetalleProyectoPage() {
             miembros={miembros}
             usuarios={usuarios}
           />
+
+          <ProjectInvitationCard proyectoId={id} />
 
           {categoriasConLinks.map((categoria) => (
             <LinkCategoryCard

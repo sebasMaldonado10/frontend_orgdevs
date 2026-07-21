@@ -121,8 +121,15 @@ export default function DashboardPage() {
         <h1 className="text-4xl font-bold">Mis proyectos</h1>
 
         <p className="mt-3 text-[var(--gris)]">
-          Estos son los proyectos donde participás.
+          Crea tus propios proyectos o únete a uno existente.
         </p>
+
+        <Link
+          href="/invitacion"
+          className="inline-block rounded-xl border border-[var(--verde)] mt-3 px-5 py-2 text-center text-sm font-semibold text-[var(--verde)] transition-all duration-300 hover:-translate-y-1 hover:bg-[var(--verde)] hover:text-[var(--background)]"
+        >
+          Unirse a un proyecto
+        </Link>
 
 
         {error && (
