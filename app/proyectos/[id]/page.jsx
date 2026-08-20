@@ -218,7 +218,7 @@ export default function DetalleProyectoPage() {
 
     try {
       const res = await fetch(
-        `${API_URL}api/proyectos/links/${linkId}/`,
+        `${API_URL}/api/proyectos/links/${linkId}/`,
         {
           method: "PATCH",
           headers: {
